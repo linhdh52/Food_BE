@@ -1,14 +1,22 @@
 package com.foodbe.entity;
 
+import com.foodbe.constants.PrefixedCode;
+import com.foodbe.constants.PrefixedCodeListener;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "categories")
+@PrefixedCode(field = "categoriesCode", prefix = "CATEGORIES")
+@EntityListeners(PrefixedCodeListener.class)
 public class CategoriesEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "categories_id")
     private Long id;
+
+    @Column(name = "categories_code", unique = true, nullable = true)
+    private String categoriesCode;
 
     @Column(nullable = false, unique = true, name = "name")
     private String name;
@@ -28,8 +36,9 @@ public class CategoriesEntity {
     public CategoriesEntity() {
     }
 
-    public CategoriesEntity(Long id, String name, String slug, String description, Long parentId, boolean active) {
+    public CategoriesEntity(Long id, String categoriesCode, String name, String slug, String description, Long parentId, boolean active) {
         this.id = id;
+        this.categoriesCode = categoriesCode;
         this.name = name;
         this.slug = slug;
         this.description = description;
@@ -43,6 +52,14 @@ public class CategoriesEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getCategoriesCode() {
+        return categoriesCode;
+    }
+
+    public void setCategoriesCode(String categoriesCode) {
+        this.categoriesCode = categoriesCode;
     }
 
     public String getName() {

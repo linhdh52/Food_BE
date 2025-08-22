@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,6 +45,7 @@ public class CategoriesServiceImpl implements CategoriesService {
     }
 
     @Override
+    @Transactional
     public ApiResponse<CategoriesDTO> createCategory(CategoriesDTO categoryDTO) {
         if (categoriesRepository.existsByName(categoryDTO.getName())) {
             return ApiResponse.buildErrorResponse(HttpStatus.BAD_REQUEST, "Tên danh mục đã tồn tại");
@@ -58,6 +60,7 @@ public class CategoriesServiceImpl implements CategoriesService {
     }
 
     @Override
+    @Transactional
     public ApiResponse<CategoriesDTO> updateCategory(Long id, CategoriesDTO categoryDTO) {
         CategoriesEntity existing = categoriesRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy danh mục với id " + id));

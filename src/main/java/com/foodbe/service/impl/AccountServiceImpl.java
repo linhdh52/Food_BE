@@ -10,6 +10,7 @@ import com.foodbe.service.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -54,6 +55,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public ApiResponse<AccountDTO> createAccount(AccountDTO accountDTO) {
         Date  date = new Date();
         if (accountRepo.existsByNumber(accountDTO.getNumber())) {
@@ -67,6 +69,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    @Transactional
     public ApiResponse<AccountDTO> updateAccount(Long id, AccountDTO accountDTO) {
         AccountEntity existing = accountRepo.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy danh mục với id " + id));

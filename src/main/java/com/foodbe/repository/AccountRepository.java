@@ -9,4 +9,7 @@ import org.springframework.stereotype.Repository;
 public interface AccountRepository extends JpaRepository<AccountEntity, Long> {
     @Query(value = "select * from account where id =?1", nativeQuery = true)
     AccountEntity getAccountByID(Long id);
+
+    boolean existsByNumber(Long number);
+
 }

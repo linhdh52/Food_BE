@@ -1,48 +1,36 @@
-package com.foodbe.entity;
+package com.foodbe.DTO;
 
-
-import javax.persistence.*;
 import java.util.Date;
 
-@Entity
-@Table(name = "account")
-public class AccountEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+public class AccountDTO {
+
     private Long id;
-
-    @Column(name = "number")
     private Long number;
-
-    @Column(name = "name")
     private String name;
-
-    @Column(name = "password")
     private String password;
-
-    @Column(name = "sex")
-    private boolean sex;
-
-    @Column(name = "birthday")
+    private Boolean sex;
     private Date birthday;
-
-    @Column(name = "time_create_user")
     private Date timeCreateUser;
-
-    @Column(name = "address")
     private String address;
-
-    @Column(name = "accumulate_points")
-    private Long accumulatePoints;
-
-    @Column(name = "level")
+    private Long accumulatePoint;
     private Long level;
-
-    @Column(name = "purchase_history")
     private Date purchaseHistory;
 
-    public AccountEntity() {
+    public AccountDTO() {
+    }
+
+    public AccountDTO(Long id, Long number, String name, String password, Boolean sex, Date birthday, Date timeCreateUser, String address, Long accumulatePoint, Long level, Date purchaseHistory) {
+        this.id = id;
+        this.number = number;
+        this.name = name;
+        this.password = password;
+        this.sex = sex;
+        this.birthday = birthday;
+        this.timeCreateUser = timeCreateUser;
+        this.address = address;
+        this.accumulatePoint = accumulatePoint;
+        this.level = level;
+        this.purchaseHistory = purchaseHistory;
     }
 
     public Long getId() {
@@ -77,11 +65,11 @@ public class AccountEntity {
         this.password = password;
     }
 
-    public boolean isSex() {
+    public Boolean getSex() {
         return sex;
     }
 
-    public void setSex(boolean sex) {
+    public void setSex(Boolean sex) {
         this.sex = sex;
     }
 
@@ -109,12 +97,12 @@ public class AccountEntity {
         this.address = address;
     }
 
-    public Long getAccumulatePoints() {
-        return accumulatePoints;
+    public Long getAccumulatePoint() {
+        return accumulatePoint;
     }
 
-    public void setAccumulatePoints(Long accumulatePoints) {
-        this.accumulatePoints = accumulatePoints;
+    public void setAccumulatePoint(Long accumulatePoint) {
+        this.accumulatePoint = accumulatePoint;
     }
 
     public Long getLevel() {

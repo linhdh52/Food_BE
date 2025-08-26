@@ -51,7 +51,7 @@ public class CategoriesServiceImpl implements CategoriesService {
             return ApiResponse.buildErrorResponse(HttpStatus.BAD_REQUEST, "Tên danh mục đã tồn tại");
         }
         if (categoriesRepository.existsBySlug(categoryDTO.getSlug())) {
-            return ApiResponse.buildErrorResponse(HttpStatus.BAD_REQUEST, "Slug đã tồn tại");
+            return ApiResponse.buildErrorResponse(HttpStatus.BAD_REQUEST, "Đường dẫn đã tồn tại");
         }
 
         CategoriesEntity entity = convertToEntity(categoryDTO);

@@ -1,16 +1,24 @@
 package com.foodbe.entity;
 
 
+import com.foodbe.constants.PrefixedCode;
+import com.foodbe.constants.PrefixedCodeListener;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
 @Table(name = "account")
+@PrefixedCode(field = "userCode", prefix = "USER")
+@EntityListeners(PrefixedCodeListener.class)
 public class AccountEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private Long id;
+
+    @Column(name = "user_code", unique = true, nullable = true)
+    private String userCode;
 
     @Column(name = "number")
     private Long number;
@@ -51,6 +59,14 @@ public class AccountEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getUserCode() {
+        return userCode;
+    }
+
+    public void setUserCode(String userCode) {
+        this.userCode = userCode;
     }
 
     public Long getNumber() {

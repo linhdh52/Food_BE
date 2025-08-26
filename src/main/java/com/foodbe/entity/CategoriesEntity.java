@@ -20,7 +20,7 @@ public class CategoriesEntity {
 
     @Column(nullable = false, unique = true, name = "name")
     private String name;
-
+ 
     @Column(name = "slug", unique = true)
     private String slug;
 

@@ -61,9 +61,9 @@ public class CategoriesServiceImpl implements CategoriesService {
 
     @Override
     @Transactional
-    public ApiResponse<CategoriesDTO> updateCategory(Long id, CategoriesDTO categoryDTO) {
-        CategoriesEntity existing = categoriesRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy danh mục với id " + id));
+    public ApiResponse<CategoriesDTO> updateCategory(CategoriesDTO categoryDTO) {
+        CategoriesEntity existing = categoriesRepository.findById(categoryDTO.getId())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy danh mục với id " + categoryDTO.getId()));
 
         existing.setName(categoryDTO.getName());
         existing.setSlug(categoryDTO.getSlug());

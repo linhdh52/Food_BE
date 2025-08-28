@@ -18,19 +18,19 @@ public class CategoriesController {
     @Autowired
     private CategoriesService categoriesService;
 
-    @PostMapping
+    @PostMapping("/create")
     @Operation(summary = "Tạo mới danh mục")
     public ApiResponse<CategoriesDTO> createCategory(@RequestBody CategoriesDTO categoryDTO) {
         return categoriesService.createCategory(categoryDTO);
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("/update")
     @Operation(summary = "Cập nhật category theo id")
-    public ApiResponse<CategoriesDTO> updateCategory(@PathVariable Long id, @RequestBody CategoriesDTO categoryDTO) {
-        return categoriesService.updateCategory(id, categoryDTO);
+    public ApiResponse<CategoriesDTO> updateCategory(@RequestBody CategoriesDTO categoryDTO) {
+        return categoriesService.updateCategory(categoryDTO);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     @Operation(summary = "Xoá category theo id")
     public ApiResponse<String> deleteCategory(@PathVariable Long id) {
         return categoriesService.deleteCategory(id);
@@ -42,7 +42,7 @@ public class CategoriesController {
         return categoriesService.getCategoryById(id);
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     @Operation(summary = "Lấy toàn bộ danh sách category")
     public ApiResponse<List<CategoriesDTO>> getAllCategories() {
         return categoriesService.getAllCategories();

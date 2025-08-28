@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface CategoriesService {
     ApiResponse<CategoriesDTO> createCategory(CategoriesDTO categoryDTO);
-    ApiResponse<CategoriesDTO> updateCategory(Long id, CategoriesDTO categoryDTO);
+    ApiResponse<CategoriesDTO> updateCategory(CategoriesDTO categoryDTO);
     ApiResponse<String> deleteCategory(Long id);
     ApiResponse<CategoriesDTO> getCategoryById(Long id);
     ApiResponse<List<CategoriesDTO>> getAllCategories();

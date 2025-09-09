@@ -2,6 +2,7 @@ package com.foodbe.entity;
 
 import com.foodbe.constants.PrefixedCode;
 import com.foodbe.constants.PrefixedCodeListener;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 
@@ -32,6 +33,17 @@ public class CategoriesEntity {
 
     @Column(name = "active", nullable = false)
     private boolean active = true;
+
+    @Column(name = "level")
+    private Long level;
+
+    @Column(name = "create_time")
+    @CreationTimestamp
+    private Long createTime;
+
+    @Column(name = "update_time")
+    @CreationTimestamp
+    private Long updateTime;
 
     public CategoriesEntity() {
     }

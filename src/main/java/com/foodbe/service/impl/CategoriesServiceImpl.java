@@ -10,7 +10,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.ZonedDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,7 +33,10 @@ public class CategoriesServiceImpl implements CategoriesService {
                 entity.getSlug(),
                 entity.getDescription(),
                 entity.getParentId(),
-                entity.isActive()
+                entity.isActive(),
+                entity.getLevel(),
+                entity.getCreateDate(),
+                entity.getUpdateDate()
         );
     }
 
@@ -41,7 +47,22 @@ public class CategoriesServiceImpl implements CategoriesService {
         entity.setDescription(dto.getDescription());
         entity.setParentId(dto.getParentId());
         entity.setActive(dto.isActive());
+        entity.setLevel(dto.getLevel());
+        entity.setCreateDate(dto.getCreateDate());
+        entity.setUpdateDate(dto.getUpdateDate());
         return entity;
+    }
+
+    @Override
+    public ApiResponse<List<CategoriesDTO>> getAllCategories() {
+        List<CategoriesEntity> entities = categoriesRepository.findAll();
+        List<CategoriesDTO> dtoList = entities.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+        List<Long> ids = dtoList.stream().map(CategoriesDTO::getId).collect(Collectors.toList());
+        Set<Long> parentIdsWithChild = new HashSet<>(categoriesRepository.findParentIdsIn(ids));
+        dtoList.forEach(dto -> dto.setHasChildren(parentIdsWithChild.contains(dto.getId())));
+        return ApiResponse.buildSuccessResponse(dtoList);
     }
 
     @Override
@@ -55,6 +76,8 @@ public class CategoriesServiceImpl implements CategoriesService {
         }
 
         CategoriesEntity entity = convertToEntity(categoryDTO);
+        entity.setCreateDate(ZonedDateTime.now());
+        entity.setUpdateDate(ZonedDateTime.now());
         CategoriesEntity saved = categoriesRepository.save(entity);
         return ApiResponse.buildSuccessResponse(convertToDTO(saved));
     }
@@ -70,6 +93,7 @@ public class CategoriesServiceImpl implements CategoriesService {
         existing.setDescription(categoryDTO.getDescription());
         existing.setParentId(categoryDTO.getParentId());
         existing.setActive(categoryDTO.isActive());
+        existing.setUpdateDate(ZonedDateTime.now());
 
         CategoriesEntity updated = categoriesRepository.save(existing);
         return ApiResponse.buildSuccessResponse(convertToDTO(updated));
@@ -77,8 +101,10 @@ public class CategoriesServiceImpl implements CategoriesService {
 
     @Override
     public ApiResponse<String> deleteCategory(Long id) {
-        if (!categoriesRepository.existsById(id)) {
-            return ApiResponse.buildErrorResponse(HttpStatus.NOT_FOUND, "Không tìm thấy danh mục để xóa");
+        CategoriesEntity category = categoriesRepository.findById(id).orElseThrow(() -> new RuntimeException("Không tìm thấy danh mục với id " + id));
+        List<CategoriesEntity> listChildren = categoriesRepository.findByParentId(category.getParentId());
+        if (!listChildren.isEmpty()) {
+            return ApiResponse.buildSuccessResponse("Tồn tại danh mục con");
         }
         categoriesRepository.deleteById(id);
         return ApiResponse.buildSuccessResponse("Xóa danh mục thành công", "ID: " + id);
@@ -88,13 +114,6 @@ public class CategoriesServiceImpl implements CategoriesService {
     public ApiResponse<CategoriesDTO> getCategoryById(Long id) {
         CategoriesEntity category = categoriesRepository.findById(id).orElseThrow(() -> new RuntimeException("Không tìm thấy danh mục với id " + id));
         return ApiResponse.buildSuccessResponse(convertToDTO(category));
-    }
-
-    @Override
-    public ApiResponse<List<CategoriesDTO>> getAllCategories() {
-        List<CategoriesEntity> entities = categoriesRepository.findAll();
-        List<CategoriesDTO> dtoList = entities.stream().map(this::convertToDTO).collect(Collectors.toList());
-        return ApiResponse.buildSuccessResponse(dtoList);
     }
 
     @Override

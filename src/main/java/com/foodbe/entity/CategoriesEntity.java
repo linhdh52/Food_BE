@@ -5,6 +5,8 @@ import com.foodbe.constants.PrefixedCodeListener;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "categories")
@@ -37,18 +39,16 @@ public class CategoriesEntity {
     @Column(name = "level")
     private Long level;
 
-    @Column(name = "create_time")
-    @CreationTimestamp
-    private Long createTime;
+    @Column(name = "create_date")
+    private ZonedDateTime createDate;
 
-    @Column(name = "update_time")
-    @CreationTimestamp
-    private Long updateTime;
+    @Column(name = "update_date")
+    private ZonedDateTime updateDate;
 
     public CategoriesEntity() {
     }
 
-    public CategoriesEntity(Long id, String categoriesCode, String name, String slug, String description, Long parentId, boolean active) {
+    public CategoriesEntity(Long id, String categoriesCode, String name, String slug, String description, Long parentId, boolean active, Long level, ZonedDateTime createDate, ZonedDateTime updateDate) {
         this.id = id;
         this.categoriesCode = categoriesCode;
         this.name = name;
@@ -56,6 +56,9 @@ public class CategoriesEntity {
         this.description = description;
         this.parentId = parentId;
         this.active = active;
+        this.level = level;
+        this.createDate = createDate;
+        this.updateDate = updateDate;
     }
 
     public Long getId() {
@@ -114,15 +117,43 @@ public class CategoriesEntity {
         this.active = active;
     }
 
+    public Long getLevel() {
+        return level;
+    }
+
+    public void setLevel(Long level) {
+        this.level = level;
+    }
+
+    public ZonedDateTime getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(ZonedDateTime createDate) {
+        this.createDate = createDate;
+    }
+
+    public ZonedDateTime getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(ZonedDateTime updateDate) {
+        this.updateDate = updateDate;
+    }
+
     @Override
     public String toString() {
         return "CategoriesEntity{" +
                 "id=" + id +
+                ", categoriesCode='" + categoriesCode + '\'' +
                 ", name='" + name + '\'' +
                 ", slug='" + slug + '\'' +
                 ", description='" + description + '\'' +
                 ", parentId=" + parentId +
                 ", active=" + active +
+                ", level=" + level +
+                ", createDate=" + createDate +
+                ", updateDate=" + updateDate +
                 '}';
     }
 }

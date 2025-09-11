@@ -1,6 +1,8 @@
 package com.foodbe.DTO;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class CategoriesDTO {
@@ -10,6 +12,10 @@ public class CategoriesDTO {
     private String description;
     private Long parentId;
     private boolean active;
+    private Long level;
+    private ZonedDateTime createDate;
+    private ZonedDateTime updateDate;
+    private boolean hasChildren;
     private List<CategoriesDTO> children = new ArrayList<>();
 
     public CategoriesDTO() {
@@ -22,6 +28,31 @@ public class CategoriesDTO {
         this.description = description;
         this.parentId = parentId;
         this.active = active;
+    }
+
+    public CategoriesDTO(Long id, String name, String slug, String description, Long parentId, boolean active, Long level, ZonedDateTime createDate, ZonedDateTime updateDate) {
+        this.id = id;
+        this.name = name;
+        this.slug = slug;
+        this.description = description;
+        this.parentId = parentId;
+        this.active = active;
+        this.level = level;
+        this.createDate = createDate;
+        this.updateDate = updateDate;
+    }
+
+    public CategoriesDTO(Long id, String name, String slug, String description, Long parentId, boolean active, Long level, ZonedDateTime createDate, ZonedDateTime updateDate, boolean hasChildren) {
+        this.id = id;
+        this.name = name;
+        this.slug = slug;
+        this.description = description;
+        this.parentId = parentId;
+        this.active = active;
+        this.level = level;
+        this.createDate = createDate;
+        this.updateDate = updateDate;
+        this.hasChildren = hasChildren;
     }
 
     public Long getId() {
@@ -70,6 +101,38 @@ public class CategoriesDTO {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public Long getLevel() {
+        return level;
+    }
+
+    public void setLevel(Long level) {
+        this.level = level;
+    }
+
+    public ZonedDateTime getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(ZonedDateTime createDate) {
+        this.createDate = createDate;
+    }
+
+    public ZonedDateTime getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(ZonedDateTime updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public boolean isHasChildren() {
+        return hasChildren;
+    }
+
+    public void setHasChildren(boolean hasChildren) {
+        this.hasChildren = hasChildren;
     }
 
     public List<CategoriesDTO> getChildren() {

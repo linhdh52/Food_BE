@@ -48,19 +48,6 @@ public class CategoriesEntity {
     public CategoriesEntity() {
     }
 
-    public CategoriesEntity(Long id, String categoriesCode, String name, String slug, String description, Long parentId, boolean active, Long level, ZonedDateTime createDate, ZonedDateTime updateDate) {
-        this.id = id;
-        this.categoriesCode = categoriesCode;
-        this.name = name;
-        this.slug = slug;
-        this.description = description;
-        this.parentId = parentId;
-        this.active = active;
-        this.level = level;
-        this.createDate = createDate;
-        this.updateDate = updateDate;
-    }
-
     public Long getId() {
         return id;
     }

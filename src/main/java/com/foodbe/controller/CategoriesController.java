@@ -18,6 +18,12 @@ public class CategoriesController {
     @Autowired
     private CategoriesService categoriesService;
 
+    @GetMapping("/getAll")
+    @Operation(summary = "Lấy toàn bộ danh sách category")
+    public ApiResponse<List<CategoriesDTO>> getAllCategories() {
+        return categoriesService.getAllCategories();
+    }
+
     @PostMapping("/create")
     @Operation(summary = "Tạo mới danh mục")
     public ApiResponse<CategoriesDTO> createCategory(@RequestBody CategoriesDTO categoryDTO) {
@@ -40,23 +46,5 @@ public class CategoriesController {
     @Operation(summary = "Lấy chi tiết category theo id")
     public ApiResponse<CategoriesDTO> getCategoryById(@PathVariable Long id) {
         return categoriesService.getCategoryById(id);
-    }
-
-    @GetMapping("/getAll")
-    @Operation(summary = "Lấy toàn bộ danh sách category")
-    public ApiResponse<List<CategoriesDTO>> getAllCategories() {
-        return categoriesService.getAllCategories();
-    }
-
-    @GetMapping("/root")
-    @Operation(summary = "Lấy danh sách category cha")
-    public ApiResponse<List<CategoriesDTO>> getRootCategories() {
-        return categoriesService.getRootCategories();
-    }
-
-    @GetMapping("/tree")
-    @Operation(summary = "Lấy tree category ra web")
-    public ApiResponse<List<CategoriesDTO>> getCategoryTree() {
-        return categoriesService.getCategoryTree();
     }
 }

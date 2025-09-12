@@ -15,4 +15,6 @@ public interface CategoriesRepository extends JpaRepository<CategoriesEntity, Lo
     List<CategoriesEntity> findByParentId(Long parentId);
     @Query("select c.parentId from CategoriesEntity c where c.parentId in :ids")
     List<Long> findParentIdsIn(@Param("ids") List<Long> ids);
+    @Query("select c from CategoriesEntity c where c.parentId in :parentIds")
+    List<CategoriesEntity> findByParentIdIn(@Param("parentIds") List<Long> parentIds);
 }

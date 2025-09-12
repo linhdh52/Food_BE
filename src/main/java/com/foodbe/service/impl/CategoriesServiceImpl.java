@@ -8,12 +8,9 @@ import com.foodbe.service.CategoriesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -93,6 +90,7 @@ public class CategoriesServiceImpl implements CategoriesService {
         existing.setDescription(categoryDTO.getDescription());
         existing.setParentId(categoryDTO.getParentId());
         existing.setActive(categoryDTO.isActive());
+        existing.setLevel(categoryDTO.getLevel());
         existing.setUpdateDate(ZonedDateTime.now());
 
         CategoriesEntity updated = categoriesRepository.save(existing);
@@ -100,14 +98,16 @@ public class CategoriesServiceImpl implements CategoriesService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public ApiResponse<String> deleteCategory(Long id) {
-        CategoriesEntity category = categoriesRepository.findById(id).orElseThrow(() -> new RuntimeException("Không tìm thấy danh mục với id " + id));
-        List<CategoriesEntity> listChildren = categoriesRepository.findByParentId(category.getParentId());
-        if (!listChildren.isEmpty()) {
-            return ApiResponse.buildSuccessResponse("Tồn tại danh mục con");
-        }
-        categoriesRepository.deleteById(id);
-        return ApiResponse.buildSuccessResponse("Xóa danh mục thành công", "ID: " + id);
+        categoriesRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy danh mục với id " + id));
+
+        Set<Long> toDelete = collectDescendantIdsInclusive(id);
+
+        categoriesRepository.deleteAllByIdInBatch(toDelete);
+
+        return ApiResponse.buildSuccessResponse("Xoá danh mục thành công", "Ids: " + toDelete);
     }
 
     @Override
@@ -116,36 +116,19 @@ public class CategoriesServiceImpl implements CategoriesService {
         return ApiResponse.buildSuccessResponse(convertToDTO(category));
     }
 
-    @Override
-    public ApiResponse<List<CategoriesDTO>> getRootCategories() {
-        List<CategoriesDTO> list = categoriesRepository.findAll()
-                .stream()
-                .filter(c -> c.getParentId() == null)
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
-        return ApiResponse.buildSuccessResponse(list);
-    }
-
-    @Override
-    public ApiResponse<List<CategoriesDTO>> getCategoryTree() {
-        List<CategoriesEntity> all = categoriesRepository.findAll();
-        List<CategoriesDTO> roots = all.stream()
-                .filter(c -> c.getParentId() == null)
-                .map(this::convertToDTO)
-                .collect(Collectors.toList());
-
-        for (CategoriesDTO root : roots) {
-            root.setChildren(getChildren(root.getId(), all));
+    private Set<Long> collectDescendantIdsInclusive(Long rootId) {
+        Set<Long> all = new LinkedHashSet<>();
+        List<Long> layer = new ArrayList<>();
+        all.add(rootId);
+        layer.add(rootId);
+        while (!layer.isEmpty()) {
+            List<CategoriesEntity> children = categoriesRepository.findByParentIdIn(layer);
+            layer = children.stream()
+                    .map(CategoriesEntity::getId)
+                    .filter(id -> !all.contains(id))
+                    .collect(Collectors.toList());
+            all.addAll(layer);
         }
-
-        return ApiResponse.buildSuccessResponse(roots);
-    }
-
-    private List<CategoriesDTO> getChildren(Long parentId, List<CategoriesEntity> all) {
-        return all.stream()
-                .filter(c -> parentId.equals(c.getParentId()))
-                .map(this::convertToDTO)
-                .peek(dto -> dto.setChildren(getChildren(dto.getId(), all)))
-                .collect(Collectors.toList());
+        return all;
     }
 }

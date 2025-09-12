@@ -12,6 +12,4 @@ public interface CategoriesService {
     ApiResponse<CategoriesDTO> updateCategory(CategoriesDTO categoryDTO);
     ApiResponse<String> deleteCategory(Long id);
     ApiResponse<CategoriesDTO> getCategoryById(Long id);
-    ApiResponse<List<CategoriesDTO>> getRootCategories();
-    ApiResponse<List<CategoriesDTO>> getCategoryTree();
 }

@@ -16,7 +16,6 @@ public class CategoriesDTO {
     private ZonedDateTime createDate;
     private ZonedDateTime updateDate;
     private boolean hasChildren;
-    private List<CategoriesDTO> children = new ArrayList<>();
 
     public CategoriesDTO() {
     }
@@ -133,13 +132,5 @@ public class CategoriesDTO {
 
     public void setHasChildren(boolean hasChildren) {
         this.hasChildren = hasChildren;
-    }
-
-    public List<CategoriesDTO> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<CategoriesDTO> children) {
-        this.children = children;
     }
 }

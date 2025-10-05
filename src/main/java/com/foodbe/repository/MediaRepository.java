@@ -13,4 +13,5 @@ public interface MediaRepository extends JpaRepository<MediaEntity, Long> {
     List<MediaEntity> findByTypeAndReferenceId(Constants.MediaType type, Long referenceId);
     Optional<MediaEntity> findFirstByTypeAndReferenceIdAndIsPrimaryTrue(Constants.MediaType type, Long referenceId);
     long countByTypeAndReferenceId(Constants.MediaType type, Long referenceId);
+    void deleteByTypeAndReferenceId(String type, Long referenceId);
 }

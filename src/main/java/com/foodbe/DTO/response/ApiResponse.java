@@ -21,7 +21,6 @@ public class ApiResponse<T> {
         this.message = message;
     }
 
-    // Static factory methods
     public static <T> ApiResponse<T> buildSuccessResponse(T data) {
         return new ApiResponse<>(200, "Success", data);
     }
@@ -34,7 +33,6 @@ public class ApiResponse<T> {
         return new ApiResponse<>(status.value(), message, null);
     }
 
-    // Getter & Setter
     public int getCode() {
         return code;
     }

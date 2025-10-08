@@ -22,27 +22,27 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping
+    @GetMapping("/getAll")
     @Operation(summary = "Lấy toàn bộ danh sách sản phẩm")
     public ApiResponse<List<ProductDTO>> getAll() {
         return productService.getAllProducts();
     }
 
-    @PostMapping
+    @PostMapping("/create")
     @Operation(summary = "Tạo sản phẩm")
     public ApiResponse<ProductDTO> create(@RequestBody ProductDTO dto) {
         dto.setId(null);
         return productService.createProduct(dto);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     @Operation(summary = "Chỉnh sửa sản phẩm")
     public ApiResponse<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto) {
         dto.setId(id);
         return productService.updateProduct(dto);
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/delete/{id}")
     @Operation(summary = "Xóa sản phẩm theo ID")
     public ApiResponse<String> delete(@PathVariable Long id) {
         return productService.deleteProduct(id);

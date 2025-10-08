@@ -38,7 +38,7 @@ public class ProductServiceImpl implements ProductService {
         this.productRepository = productRepository;
     }
 
-    // ====================== GET ALL ======================
+    @Transactional(readOnly = true)
     @Override
     public ApiResponse<List<ProductDTO>> getAllProducts() {
         try {

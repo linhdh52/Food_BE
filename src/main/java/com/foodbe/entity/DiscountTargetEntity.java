@@ -3,12 +3,7 @@ package com.foodbe.entity;
 import javax.persistence.*;
 
 @Entity
-@Table(
-        name = "discount_targets",
-        indexes = {
-                @Index(name = "idx_discount_targets", columnList = "discount_id, target_type, target_id")
-        }
-)
+@Table(name = "discount_targets")
 public class DiscountTargetEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +18,9 @@ public class DiscountTargetEntity {
 
     @Column(name = "target_id", nullable = false)
     private Long targetId;
+
+    public DiscountTargetEntity() {
+    }
 
     public Long getId() {
         return id;

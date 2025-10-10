@@ -6,10 +6,7 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(
-        name = "discount_usages",
-        indexes = {@Index(name = "idx_usages_discount_user", columnList = "discount_id, user_id")}
-)
+@Table(name = "discount_usages")
 public class DiscountUsageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +25,9 @@ public class DiscountUsageEntity {
     @CreationTimestamp
     @Column(name = "used_at", nullable = false, updatable = false)
     private LocalDateTime usedAt;
+
+    public DiscountUsageEntity() {
+    }
 
     public Long getId() {
         return id;

@@ -11,13 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(
-        name = "discounts",
-        indexes = {
-                @Index(name = "idx_discounts_scope_active", columnList = "scope, active"),
-                @Index(name = "idx_discounts_priority", columnList = "priority")
-        }
-)
+@Table(name = "discounts")
 public class DiscountEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,10 +28,10 @@ public class DiscountEntity {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "scope", nullable = false, length = 16)
+    @Column(name = "scope", length = 16, nullable = false)
     private String scope;
 
-    @Column(name = "discount_type", nullable = false, length = 16)
+    @Column(name = "discount_type", length = 16, nullable = false)
     private String discountType;
 
     @Column(name = "discount_value", precision = 12, scale = 2, nullable = false)
@@ -73,8 +67,11 @@ public class DiscountEntity {
     @Column(name = "max_usage_per_user")
     private Integer maxUsagePerUser;
 
-    @Column(name = "day_of_week", length = 32)
+    @Column(name = "day_of_week", length = 64)
     private String dayOfWeek;
+
+    @Column(name = "user_id", length = 512)
+    private String userId;
 
     @Column(name = "start_time")
     private LocalTime startTime;
@@ -82,16 +79,13 @@ public class DiscountEntity {
     @Column(name = "end_time")
     private LocalTime endTime;
 
-    @Column(name = "user_id", length = 255)
-    private String userId;
-
-    @Column(name = "segment_code")
+    @Column(name = "segment_code", length = 64)
     private String segmentCode;
 
-    @Column(name = "payment_method")
+    @Column(name = "payment_method", length = 32)
     private String paymentMethod;
 
-    @Column(name = "region_code")
+    @Column(name = "region_code", length = 32)
     private String regionCode;
 
     @CreationTimestamp
@@ -107,6 +101,9 @@ public class DiscountEntity {
 
     @OneToMany(mappedBy = "discount", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<DiscountUsageEntity> usages = new ArrayList<>();
+
+    public DiscountEntity() {
+    }
 
     public Long getId() {
         return id;
@@ -252,6 +249,14 @@ public class DiscountEntity {
         this.dayOfWeek = dayOfWeek;
     }
 
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
     public LocalTime getStartTime() {
         return startTime;
     }
@@ -266,14 +271,6 @@ public class DiscountEntity {
 
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getSegmentCode() {

@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface DiscountTargetRepository extends JpaRepository<DiscountTargetEntity, Long> {
     List<DiscountTargetEntity> findByDiscountId(Long discountId);
+
     List<DiscountTargetEntity> findByTargetTypeAndTargetId(String targetType, Long targetId);
 }

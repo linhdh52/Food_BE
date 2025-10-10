@@ -31,10 +31,10 @@ public class DiscountController {
         return discountService.createDiscount(dto);
     }
 
-    @PutMapping("update/{id}")
+    @PutMapping("update")
     @Operation(summary = "Cập nhật khuyến mãi")
-    public ApiResponse<DiscountDTO> update(@PathVariable Long id, @RequestBody DiscountDTO dto) {
-        return discountService.updateDiscount(id, dto);
+    public ApiResponse<DiscountDTO> update(@RequestBody DiscountDTO dto) {
+        return discountService.updateDiscount(dto);
     }
 
     @DeleteMapping("delete/{id}")
@@ -47,7 +47,10 @@ public class DiscountController {
     @Operation(summary = "Áp mã giảm giá cho tổng đơn hàng")
     public ApiResponse<?> applyCoupon(@RequestParam String code,
                                       @RequestParam Long userId,
-                                      @RequestParam BigDecimal orderTotal) {
-        return discountService.applyCoupon(code, userId, orderTotal);
+                                      @RequestParam BigDecimal orderTotal,
+                                      @RequestParam(required = false) String paymentMethod,
+                                      @RequestParam(required = false) String regionCode,
+                                      @RequestParam(required = false) String userSegment) {
+        return discountService.applyCoupon(code, userId, orderTotal, paymentMethod, regionCode, userSegment);
     }
 }

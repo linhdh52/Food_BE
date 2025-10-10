@@ -23,14 +23,16 @@ public class DiscountDTO {
     private Integer maxUsagePerUser;
     private LocalDateTime startDate;
     private LocalDateTime endDate;
-
-    private List<Integer> dayOfWeek;
+    private List<String> dayOfWeek;
+    private List<String> userId;
     private LocalTime startTime;
     private LocalTime endTime;
-    private String userId;
     private String segmentCode;
     private String paymentMethod;
     private String regionCode;
+
+    public DiscountDTO() {
+    }
 
     public Long getId() {
         return id;
@@ -168,12 +170,20 @@ public class DiscountDTO {
         this.endDate = endDate;
     }
 
-    public List<Integer> getDayOfWeek() {
+    public List<String> getDayOfWeek() {
         return dayOfWeek;
     }
 
-    public void setDayOfWeek(List<Integer> dayOfWeek) {
+    public void setDayOfWeek(List<String> dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
+    }
+
+    public List<String> getUserId() {
+        return userId;
+    }
+
+    public void setUserId(List<String> userId) {
+        this.userId = userId;
     }
 
     public LocalTime getStartTime() {
@@ -190,14 +200,6 @@ public class DiscountDTO {
 
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
     }
 
     public String getSegmentCode() {
